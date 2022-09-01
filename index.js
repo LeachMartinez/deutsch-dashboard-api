@@ -1,17 +1,20 @@
 import express from "express";
 import dotenv from "dotenv";
-import sequelize from "./models/index";
+import sequelize from "./db.js";
+import router from "./routes/index.js";
 
 dotenv.config();
 
 const env = process.env;
 const app = express();
 
+app.use("/", router);
+
  (async () => {
   try {
     await sequelize.authenticate();
     await sequelize.sync();
-    app.listen(env.SEVERER_PORT, () => console.log(`Server started on port ${env.SEVERER_PORT} `));
+    app.listen(5000, () => console.log(`Server started on port ${5000} `));
   } catch (err) {
     console.log(err);
   }

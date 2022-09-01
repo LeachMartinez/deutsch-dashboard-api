@@ -1,22 +1,31 @@
-import Sequelize from 'sequelize';
-import dotenv from 'dotenv'
+import {DataTypes} from 'sequelize';
+import sequelize from "../db.js";
 
-dotenv.config();
-const env = process.env;
 
 // import models
-
-
-const sequelize = new Sequelize(env.DB_USERNAME, env.DB_USERNAME, env.DB_PASSWORD, {
-  host: env.DB_HOST,
-  dialect: 'postgres'
+const User = sequelize.define('user', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING
+  }
 });
 
-export default async function testConnectionDB () {
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
+const Dashboard = sequelize.define('dashboard', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  timestamp: {
+    type: DataTypes.STRING,
   }
-}
+});
+
+User.hasMany(Dashboard);
+Dashboard.belongsTo(User);
+
+export { User, Dashboard }
